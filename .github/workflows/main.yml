@@ -1,0 +1,24 @@
+name: Quick VDS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 360
+    steps:
+      - name: Enable RDP and Set Password
+        run: |
+          Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -Value 0
+          Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+          Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 0
+          net user runneradmin P@ssw0rd123! /add
+          net localgroup administrators runneradmin /add
+        shell: powershell
+
+      - name: Start Pinggy TCP Tunnel
+        run: |
+          Write-Host "Pinggy Tüneli Başlatılıyor..."
+          ssh -o StrictHostKeyChecking=no -R 0:localhost:3389 a.pinggy.io
+        shell: bash
