@@ -17,8 +17,7 @@ jobs:
           net localgroup administrators runneradmin /add
         shell: powershell
 
-      - name: Start Pinggy TCP Tunnel
+      - name: Start localhost.run Tunnel
         run: |
-          Write-Host "Pinggy Tüneli Başlatılıyor..."
-          ssh -o StrictHostKeyChecking=no -R 0:localhost:3389 a.pinggy.io
+          ssh -o StrictHostKeyChecking=no -R 80:localhost:3389 free.lpld.in
         shell: bash
